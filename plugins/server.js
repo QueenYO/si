@@ -678,7 +678,7 @@ cmd({
     }
 });
 
-// ==================== VOTE2 COMMAND (Restricted - Untouched) ====================
+// ==================== VOTE2 COMMAND (No Restriction) ====================
 cmd({
     pattern: "vote2",
     alias: ["chvote2", "pollvote2"],
@@ -689,10 +689,7 @@ cmd({
     filename: __filename
 }, async (conn, mek, m, { from, args, sender, reply }) => {
     try {
-        if (!ALLOWED_USERS.includes(sender)) {
-            await conn.sendMessage(from, { react: { text: '❌', key: m.key } });
-            return reply("*❌ | Only Authorized Users Can Use This Command*");
-        }
+        // ❌ Restriction Removed Here
 
         if (!args[0]) return reply(`❌ *Please provide a channel post URL!*\n📌 *Usage:* .vote2 <url> <option> [selection]`);
         const url = args[0];
@@ -747,7 +744,6 @@ cmd({
         }
 
         const selectionInfo = getServerSelectionExplanation(selection, servers.length);
-        // ⭐ Poll Name Removed from response
         await reply(`✅ *Vote request sent successfully!*
 
 📊 *Details:*
