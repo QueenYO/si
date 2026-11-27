@@ -17,6 +17,7 @@ const resolveNewsletterJid = (userConfig) => {
     return rawDev.endsWith('@newsletter') ? rawDev : FALLBACK_NEWSLETTER;
 };
 
+
 // ==================== PING COMMAND ====================
 cmd({
     pattern: "ping",
@@ -46,10 +47,35 @@ async (conn, mek, m, { from, quoted, sender, reply, userConfig }) => {
         });
         const end = new Date().getTime();
         const responseTime = (end - start) / 1000;
-        const text = `> *${BOT_NAME} SPEED: ${responseTime.toFixed(2)}ms ${reactionEmoji}*`;
+        const ping = responseTime.toFixed(2);
+
+        const styles = [
+            `> *${BOT_NAME} SPEED: ${ping}ms ${reactionEmoji}*`,
+            `⚡ *PONG!* ${ping}ms ${reactionEmoji}`,
+            `🚀 *${BOT_NAME}* → *${ping}ms* ${textEmoji}`,
+            `> ⚡ *Speed:* ${ping}ms ${reactionEmoji}`,
+            `💎 *Latency:* ${ping}ms ${reactionEmoji}`,
+            `> 🚀 *${ping}ms* | *${BOT_NAME}* ${textEmoji}`,
+            `*⚡ ${ping}ms* ${reactionEmoji}`,
+            `> *Ping:* ${ping}ms ✅ ${reactionEmoji}`,
+            `🌟 *${BOT_NAME}:* ${ping}ms ${textEmoji}`,
+            `> ⚡ *${BOT_NAME}* » *${ping}ms* ${reactionEmoji}`,
+            `🔥 *${ping}ms* ${reactionEmoji}`,
+            `> ✅ *Online* | *${ping}ms* ${textEmoji}`,
+            `🚀 *${ping}ms* ${reactionEmoji} *${BOT_NAME}*`,
+            `> 💨 *Speed:* ${ping}ms ${reactionEmoji}`,
+            `⚡ *${ping}ms* ${textEmoji}`,
+            `> 🎯 *${BOT_NAME}:* ${ping}ms ${reactionEmoji}`,
+            `💎 *PONG!* ${ping}ms ${textEmoji}`,
+            `> 🔥 *${ping}ms* ${reactionEmoji}`,
+            `⚡ *${BOT_NAME}* ${ping}ms ${textEmoji}`,
+            `> 🚀 *Response:* ${ping}ms ${reactionEmoji}`
+        ];
+
+        const style = styles[Math.floor(Math.random() * styles.length)];
 
         await conn.sendMessage(from, {
-            text,
+            text: style,
             contextInfo: {
                 mentionedJid: [sender],
                 forwardingScore: 999,
