@@ -89,24 +89,6 @@ cmd({
 
         if (!success) {
             try {
-                const apiUrl = `https://jerrycoder.oggyapi.workers.dev/down/insta?url=${igUrl}`;
-                const { data } = await axios.get(apiUrl, { timeout: 20000 });
-
-                if (data?.status === 'success' && data?.data?.url) {
-                    const mediaUrl = data.data.url;
-                    const type = data.data.type || 'video';
-
-                    await conn.sendMessage(from, {
-                        [type === 'video' ? 'video' : 'image']: { url: mediaUrl },
-                        caption: `📶 *Instagram Downloader*\n\n- ❤‍🩹 *Quality*: HD\n\n> Powered by ${BOT_NAME}`
-                    }, { quoted: mek });
-                    success = true;
-                }
-            } catch {}
-        }
-
-        if (!success) {
-            try {
                 const apiUrl = `https://api-aswin-sparky.koyeb.app/api/downloader/igdl?url=${igUrl}`;
                 const { data } = await axios.get(apiUrl, { timeout: 20000 });
 
@@ -181,24 +163,6 @@ cmd({
         await conn.sendMessage(from, { react: { text: '⏳', key: m.key } });
 
         let success = false;
-
-        if (!success) {
-            try {
-                const apiUrl = `https://jerrycoder.oggyapi.workers.dev/down/insta?url=${igUrl}`;
-                const { data } = await axios.get(apiUrl, { timeout: 20000 });
-
-                if (data?.status === 'success' && data?.data?.url) {
-                    const mediaUrl = data.data.url;
-                    const type = data.data.type || 'video';
-
-                    await conn.sendMessage(from, {
-                        [type === 'video' ? 'video' : 'image']: { url: mediaUrl },
-                        caption: `📶 *Instagram Downloader*\n\n- ❤‍🩹 *Quality*: HD\n\n> Powered by ${BOT_NAME}`
-                    }, { quoted: mek });
-                    success = true;
-                }
-            } catch {}
-        }
 
         if (!success) {
             try {
@@ -279,24 +243,6 @@ cmd({
 
         if (!success) {
             try {
-                const apiUrl = `https://jerrycoder.oggyapi.workers.dev/down/insta?url=${igUrl}`;
-                const { data } = await axios.get(apiUrl, { timeout: 20000 });
-
-                if (data?.status === 'success' && data?.data?.url) {
-                    const mediaUrl = data.data.url;
-                    const type = data.data.type || 'video';
-
-                    await conn.sendMessage(from, {
-                        [type === 'video' ? 'video' : 'image']: { url: mediaUrl },
-                        caption: `📶 *Instagram Downloader*\n\n- ❤‍🩹 *Quality*: HD\n\n> Powered by ${BOT_NAME}`
-                    }, { quoted: mek });
-                    success = true;
-                }
-            } catch {}
-        }
-
-        if (!success) {
-            try {
                 const apiUrl = `https://api-aswin-sparky.koyeb.app/api/downloader/igdl?url=${igUrl}`;
                 const { data } = await axios.get(apiUrl, { timeout: 20000 });
 
@@ -374,24 +320,6 @@ cmd({
 
         if (!success) {
             try {
-                const apiUrl = `https://jerrycoder.oggyapi.workers.dev/down/insta?url=${igUrl}`;
-                const { data } = await axios.get(apiUrl, { timeout: 20000 });
-
-                if (data?.status === 'success' && data?.data?.url) {
-                    const mediaUrl = data.data.url;
-                    const type = data.data.type || 'video';
-
-                    await conn.sendMessage(from, {
-                        [type === 'video' ? 'video' : 'image']: { url: mediaUrl },
-                        caption: `📶 *Instagram Downloader*\n\n- ❤‍🩹 *Quality*: HD\n\n> Powered by ${BOT_NAME}`
-                    }, { quoted: mek });
-                    success = true;
-                }
-            } catch {}
-        }
-
-        if (!success) {
-            try {
                 const apiUrl = `https://api-aswin-sparky.koyeb.app/api/downloader/igdl?url=${igUrl}`;
                 const { data } = await axios.get(apiUrl, { timeout: 20000 });
 
@@ -466,17 +394,6 @@ cmd({
         await conn.sendMessage(from, { react: { text: '⏳', key: m.key } });
 
         let videoUrl = null;
-
-        if (!videoUrl) {
-            try {
-                const apiUrl = `https://jerrycoder.oggyapi.workers.dev/down/insta?url=${igUrl}`;
-                const { data } = await axios.get(apiUrl, { timeout: 20000 });
-
-                if (data?.status === 'success' && data?.data?.url) {
-                    videoUrl = data.data.url;
-                }
-            } catch {}
-        }
 
         if (!videoUrl) {
             try {
@@ -579,26 +496,6 @@ cmd({
 
         if (!success) {
             try {
-                const apiUrl = `https://jerrycoder.oggyapi.workers.dev/down/tiktok?url=${encodeURIComponent(ttUrl)}`;
-                const { data } = await axios.get(apiUrl, { timeout: 20000 });
-
-                if (data?.status === 'success' && data?.result?.data) {
-                    const d = data.result.data;
-                    const mediaUrl = d.play;
-                    if (mediaUrl) {
-                        await conn.sendMessage(from, {
-                            video: { url: mediaUrl },
-                            mimetype: 'video/mp4',
-                            caption: `📶 *TikTok Downloader*\n\n- 📝 *Title*: ${d.title || 'N/A'}\n- 👤 *Author*: ${d.author?.nickname || 'N/A'}\n- ❤‍🩹 *Quality*: HD\n\n> Powered by ${BOT_NAME}`
-                        }, { quoted: mek });
-                        success = true;
-                    }
-                }
-            } catch {}
-        }
-
-        if (!success) {
-            try {
                 const bases = [
                     'https://xjawadtech.vercel.app',
                     'https://jawadtechhub.vercel.app'
@@ -667,26 +564,6 @@ cmd({
                         caption: `📶 *TikTok Downloader*\n\n- 📝 *Title*: ${data.metadata?.title || 'N/A'}\n- 👤 *Author*: ${data.metadata?.author || 'N/A'}\n- ❤‍🩹 *Quality*: HD\n\n> Powered by ${BOT_NAME}`
                     }, { quoted: mek });
                     success = true;
-                }
-            } catch {}
-        }
-
-        if (!success) {
-            try {
-                const apiUrl = `https://jerrycoder.oggyapi.workers.dev/down/tiktok?url=${encodeURIComponent(ttUrl)}`;
-                const { data } = await axios.get(apiUrl, { timeout: 20000 });
-
-                if (data?.status === 'success' && data?.result?.data) {
-                    const d = data.result.data;
-                    const mediaUrl = d.play;
-                    if (mediaUrl) {
-                        await conn.sendMessage(from, {
-                            video: { url: mediaUrl },
-                            mimetype: 'video/mp4',
-                            caption: `📶 *TikTok Downloader*\n\n- 📝 *Title*: ${d.title || 'N/A'}\n- 👤 *Author*: ${d.author?.nickname || 'N/A'}\n- ❤‍🩹 *Quality*: HD\n\n> Powered by ${BOT_NAME}`
-                        }, { quoted: mek });
-                        success = true;
-                    }
                 }
             } catch {}
         }
@@ -767,26 +644,6 @@ cmd({
 
         if (!success) {
             try {
-                const apiUrl = `https://jerrycoder.oggyapi.workers.dev/down/tiktok?url=${encodeURIComponent(ttUrl)}`;
-                const { data } = await axios.get(apiUrl, { timeout: 20000 });
-
-                if (data?.status === 'success' && data?.result?.data) {
-                    const d = data.result.data;
-                    const mediaUrl = d.play;
-                    if (mediaUrl) {
-                        await conn.sendMessage(from, {
-                            video: { url: mediaUrl },
-                            mimetype: 'video/mp4',
-                            caption: `📶 *TikTok Downloader*\n\n- 📝 *Title*: ${d.title || 'N/A'}\n- 👤 *Author*: ${d.author?.nickname || 'N/A'}\n- ❤‍🩹 *Quality*: HD\n\n> Powered by ${BOT_NAME}`
-                        }, { quoted: mek });
-                        success = true;
-                    }
-                }
-            } catch {}
-        }
-
-        if (!success) {
-            try {
                 const bases = [
                     'https://xjawadtech.vercel.app',
                     'https://jawadtechhub.vercel.app'
@@ -861,26 +718,6 @@ cmd({
 
         if (!success) {
             try {
-                const apiUrl = `https://jerrycoder.oggyapi.workers.dev/down/tiktok?url=${encodeURIComponent(ttUrl)}`;
-                const { data } = await axios.get(apiUrl, { timeout: 20000 });
-
-                if (data?.status === 'success' && data?.result?.data) {
-                    const d = data.result.data;
-                    const mediaUrl = d.play;
-                    if (mediaUrl) {
-                        await conn.sendMessage(from, {
-                            video: { url: mediaUrl },
-                            mimetype: 'video/mp4',
-                            caption: `📶 *TikTok Downloader*\n\n- 📝 *Title*: ${d.title || 'N/A'}\n- 👤 *Author*: ${d.author?.nickname || 'N/A'}\n- ❤‍🩹 *Quality*: HD\n\n> Powered by ${BOT_NAME}`
-                        }, { quoted: mek });
-                        success = true;
-                    }
-                }
-            } catch {}
-        }
-
-        if (!success) {
-            try {
                 const bases = [
                     'https://xjawadtech.vercel.app',
                     'https://jawadtechhub.vercel.app'
@@ -944,18 +781,6 @@ cmd({
 
                 if (data?.status === true && data?.result) {
                     videoUrl = data.result;
-                }
-            } catch {}
-        }
-
-        if (!videoUrl) {
-            try {
-                const apiUrl = `https://jerrycoder.oggyapi.workers.dev/down/tiktok?url=${encodeURIComponent(ttUrl)}`;
-                const { data } = await axios.get(apiUrl, { timeout: 20000 });
-
-                if (data?.status === 'success' && data?.result?.data) {
-                    const d = data.result.data;
-                    videoUrl = d.play || null;
                 }
             } catch {}
         }
