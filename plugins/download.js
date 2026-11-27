@@ -52,7 +52,7 @@ async function safeRemove(filePath, retries = 5, delayMs = 1000) {
 }
 
 cmd({
-    pattern: "download",
+    pattern: "dl",
     alias: ["down", "dl", "downurl"],
     desc: "Download any direct file URL (disk-based)",
     category: "download",
