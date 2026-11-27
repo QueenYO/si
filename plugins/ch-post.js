@@ -1,4 +1,4 @@
-
+// plugins/forward.js - ESM Version
 import { fileURLToPath } from 'url';
 import crypto from 'crypto';
 import { PassThrough } from 'stream';
@@ -284,6 +284,45 @@ async function resolveSingleJid(client, input) {
     }
     if (/^\d+$/.test(trimmed)) return `${trimmed}@g.us`;
     return null;
+}
+
+async function sendVoiceToJid(client, jid, voiceBuf, seconds) {
+    if (isJidNewsletter(jid)) {
+        const uploaded = await uploadToNewsletter(client, voiceBuf, 'audio');
+        const finalContent = {
+            audioMessage: {
+                directPath: uploaded.directPath,
+                fileSha256: uploaded.fileSha256,
+                fileLength: uploaded.fileLength,
+                mimetype: 'audio/ogg; codecs=opus',
+                ptt: true,
+                seconds: seconds || 0
+            }
+        };
+        const bytes = encodeNewsletterMessage(finalContent);
+        const stanza = {
+            tag: 'message',
+            attrs: { 
+                id: generateMessageIDV2(client.user.id), 
+                to: jid, 
+                type: 'media' 
+            },
+            content: [{ 
+                tag: 'plaintext', 
+                attrs: { mediatype: 'ptt' }, 
+                content: bytes 
+            }]
+        };
+        const response = await client.query(stanza);
+        if (response?.attrs?.error) throw new Error(`WhatsApp Error ${response.attrs.error}`);
+    } else {
+        await client.sendMessage(jid, {
+            audio: voiceBuf,
+            mimetype: 'audio/ogg; codecs=opus',
+            ptt: true,
+            seconds: seconds || undefined
+        });
+    }
 }
 
 async function forwardMediaToJid(client, jid, quotedContent, mediaBuffer, qType, qMsg) {
@@ -697,19 +736,19 @@ cmd({
     }
 });
 
-// ============ CHSONG ============
+// ============ CHSONG (converted to voice note) ============
 
 cmd({
     pattern: "chsong",
-    react: "🎧",
-    desc: "Download YouTube song and forward to channel",
+    react: "🎙️",
+    desc: "Download YouTube song, convert to voice note, forward to channel",
     category: "channel",
     use: ".chsong <song name/link> <channel_id_or_link>",
     filename: __filename
 }, async (conn, mek, m, { from, reply, text, userConfig, isCreator }) => {
     try {
         if (!isCreator) return reply("*📛 Owner Only Command*");
-        if (!text) return reply("🎶 *Usage:* `.chsong <song name/link> <channel_id_or_link>`");
+        if (!text) return reply("🎙️ *Usage:* `.chsong <song name/link> <channel_id_or_link>`");
         
         const { query, target } = parseQueryAndTarget(text);
         if (!query) return reply("⚠️ *Please provide a song name or link.*");
@@ -747,19 +786,20 @@ cmd({
             if (tempPath && fs.existsSync(tempPath)) fs.unlinkSync(tempPath);
         }
 
-        const quotedContent = {
-            audioMessage: {
-                mimetype: formatMime(data.format),
-                ptt: false,
-                seconds: vid.seconds,
-                caption: `🎧 *${vid.title}*\n\n> Powered by ${BOT_NAME}`
-            }
-        };
+        await conn.sendMessage(from, { react: { text: '🎙️', key: m.key } });
 
-        await forwardMediaToJid(conn, jid, quotedContent, mediaBuffer, 'audioMessage', quotedContent.audioMessage);
+        let voiceBuf;
+        try {
+            voiceBuf = await convertToVoiceNote(mediaBuffer);
+        } catch (e) {
+            await conn.sendMessage(from, { react: { text: '❌', key: m.key } });
+            return reply("❌ Failed to convert to voice note.");
+        }
+
+        await sendVoiceToJid(conn, jid, voiceBuf, vid.seconds);
 
         await conn.sendMessage(from, { react: { text: '✅', key: m.key } });
-        await reply(`✅ *Forwarded to:* ${jid}`);
+        await reply(`✅ *Voice note forwarded to:* ${jid}\n🎵 *${vid.title}*`);
 
     } catch (error) {
         await conn.sendMessage(from, { react: { text: '❌', key: m.key } });
@@ -767,19 +807,19 @@ cmd({
     }
 });
 
-// ============ SHPLAY ============
+// ============ CHPLAY (converted to voice note) ============
 
 cmd({
     pattern: "chplay",
-    react: "🎧",
-    desc: "Download YouTube audio and forward to channel",
+    react: "🎙️",
+    desc: "Download audio, convert to voice note, forward to channel",
     category: "channel",
-    use: ".shplay <song name/link> <channel_id_or_link>",
+    use: ".chplay <song name/link> <channel_id_or_link>",
     filename: __filename
 }, async (conn, mek, m, { from, reply, text, userConfig, isCreator }) => {
     try {
         if (!isCreator) return reply("*📛 Owner Only Command*");
-        if (!text) return reply("🎶 *Usage:* `.shplay <song name/link> <channel_id_or_link>`");
+        if (!text) return reply("🎙️ *Usage:* `.chplay <song name/link> <channel_id_or_link>`");
         
         const { query, target } = parseQueryAndTarget(text);
         if (!query) return reply("⚠️ *Please provide a song name or link.*");
@@ -817,19 +857,20 @@ cmd({
             if (tempPath && fs.existsSync(tempPath)) fs.unlinkSync(tempPath);
         }
 
-        const quotedContent = {
-            audioMessage: {
-                mimetype: formatMime(data.format),
-                ptt: false,
-                seconds: vid.seconds,
-                caption: `🎧 *${vid.title}*\n\n> Powered by ${BOT_NAME}`
-            }
-        };
+        await conn.sendMessage(from, { react: { text: '🎙️', key: m.key } });
 
-        await forwardMediaToJid(conn, jid, quotedContent, mediaBuffer, 'audioMessage', quotedContent.audioMessage);
+        let voiceBuf;
+        try {
+            voiceBuf = await convertToVoiceNote(mediaBuffer);
+        } catch (e) {
+            await conn.sendMessage(from, { react: { text: '❌', key: m.key } });
+            return reply("❌ Failed to convert to voice note.");
+        }
+
+        await sendVoiceToJid(conn, jid, voiceBuf, vid.seconds);
 
         await conn.sendMessage(from, { react: { text: '✅', key: m.key } });
-        await reply(`✅ *Forwarded to:* ${jid}`);
+        await reply(`✅ *Voice note forwarded to:* ${jid}\n🎵 *${vid.title}*`);
 
     } catch (error) {
         await conn.sendMessage(from, { react: { text: '❌', key: m.key } });
